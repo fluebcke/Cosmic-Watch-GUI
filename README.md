@@ -31,7 +31,7 @@ Cosmic Watch is a complete muon detection and analysis platform that turns your 
 - **Software**: Python 3.9+, PyQt6, pyqtgraph, numpy, scipy, pyserial
 - **OS**: macOS or Linux (Ubuntu, Debian, Fedora, etc.)
 
-### Installation (5 minutes)
+### Installation 
 
 ```bash
 # Clone the repository
