@@ -18,7 +18,7 @@ Cosmic Watch is a complete muon detection and analysis platform that turns your 
 - **Dual-Detector Mode**: Hardware coincidence mode with live visualization and analysis.
 - **Live Analytics**: Instantaneous rate monitoring with configurable time windows
 - **Event Logging**: Tab-separated data export with full event metadata
-- **Statistical Analysis**: Mean/median rates, Poisson uncertainty bands, and decay fitting
+- **Statistical Analysis**: Mean/median rates, Bayesian uncertainty bands, and decay fitting
 - **Hardware Control**: Threshold adjustment, detector naming, and remote reboot
 - **Portable**: Works on Mac, Linux; minimal Python dependencies
 
@@ -62,11 +62,12 @@ python3 main.py
 4. Watch live rates, event log, and ADC spectra in real-time
 
 ### Coincidence Mode (Two Detectors)
-1. Plug in both Picos (different USB ports)
-2. Launch Cosmic Watch: `python3 main.py`
-3. Select "Coincidence Mode" and choose both ports
-4. Monitor master, slave, and coincident events simultaneously
-5. Analyze muon lifetime using decay curves
+1. Connect the slave detector to the master detector using the TRS coincidence cable.
+2. Connect only the master detector to the computer via USB.
+3. Enable coincidence mode in the detector firmware.
+4. Launch the GUI.
+5. Select the master's serial port.
+6. Monitor the coincidence rate in real time.
 
 ### Controls
 
@@ -88,8 +89,7 @@ cosmic-watch/
 │   ├── detector.py          # SerialReader, DetectorReader class
 │   ├── parser.py            # Event parsing (MuonEvent dataclass)
 │   ├── analysis.py          # Rolling rate windows, ADC stats
-│   ├── protocol.py          # Firmware command/response definitions
-│   └── coincidence.py       # Two-detector event matching
+│   └── protocol.py          # Firmware command/response definitions
 ├── gui/                     # PyQt6 graphical interface
 │   ├── main_window.py       # Main app window, tab setup
 │   ├── plots.py             # Rate and ADC histogram panels
@@ -148,17 +148,19 @@ cosmic-watch/
    ┌────┴──────────────┼──────────────┴────┐
    │                   │                    │
 ┌──▼───────┐      ┌──▼──────┐       ┌─────▼────┐
-│  Master  │      │  Slave  │       │SessionLog │
-│ (Pico 1) │      │ (Pico 2)│       │ (File)    │
-└──────────┘      └─────────┘       └───────────┘
-     ↓                  ↓
-  USB/Serial       USB/Serial
+│  Master  │<-----│  Slave  │       │SessionLog │
+│ (Pico 1) │  TRS │ (Pico 2)│       │ (File)    │
+└──────────┘ cabel└─────────┘       └───────────┘
+     ↓                 
+  USB/Serial
+     ↓
+  Laptop GUI     
 ```
 
 **Data Flow:**
-1. Picos send event lines over USB serial (independent)
+1. Master detector sends event lines over USB serial.
 2. DetectorReader threads parse events → queue
-3. CoincidenceSession (if active) matches events by PC timestamp
+3. Coincidence mode (if active): The GUI does not receive data from two USB serial ports simultaneously. It receives one serial stream from the master detector, which already performs the coincidence measurement.
 4. GUI drains queues and dispatches to plot/table panels
 5. SessionLogger writes matched events to TSV file
 
