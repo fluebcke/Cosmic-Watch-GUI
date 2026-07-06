@@ -1,0 +1,8 @@
+# Detector log started : 2026-07-06 11:38:21.878
+# Port                 : /dev/cu.Bluetooth-Incoming-Port  Baud: 115200
+# Author               : (unset)
+# Threshold            : 20 mV
+# Columns              : pc_timestamp	evNum	picoTimeMs	adcAtEvent	rateOverall	threshold_mV
+#
+pc_timestamp	evNum	picoTimeMs	adcAtEvent	rateOverall	threshold_mV
+# Detector log ended : 2026-07-06 11:38:35.276
