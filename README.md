@@ -15,7 +15,7 @@ Cosmic Watch is a complete muon detection and analysis platform that turns your 
 ### Key Features
 
 - **Live Detection**: Real-time muon event streaming from one or two detectors
-- **Dual-Detector Mode**: Hardware coincidence detection with software validation
+- **Dual-Detector Mode**: Hardware coincidence mode with live visualization and analysis.
 - **Live Analytics**: Instantaneous rate monitoring with configurable time windows
 - **Event Logging**: Tab-separated data export with full event metadata
 - **Statistical Analysis**: Mean/median rates, Poisson uncertainty bands, and decay fitting
@@ -35,8 +35,8 @@ Cosmic Watch is a complete muon detection and analysis platform that turns your 
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/cosmic-watch.git
-cd cosmic-watch
+git clone https://github.com/fluebcke/Cosmic-Watch-GUI.git
+cd Cosmic-Watch-GUI
 
 # Create and activate virtual environment
 python3 -m venv venv
@@ -111,37 +111,20 @@ cosmic-watch/
 
 ---
 
-## Documentation
-
-### For Users
-- **[Setup Guide](docs/SETUP_GUIDE.md)** — Installation from scratch (Mac/Linux)
-- **[Troubleshooting](docs/TROUBLESHOOTING.md)** — Common issues & fixes
-- **[User Manual](docs/USER_MANUAL.md)** — Features & how to use them (coming soon)
-
-### For Developers
-- **[Implementation Plan](docs/IMPLEMENTATION_PLAN.md)** — 5 planned features with exact changes
-- **[Architecture](docs/ARCHITECTURE.md)** — System design and component interaction (coming soon)
-- **[API Reference](docs/API.md)** — DetectorReader, CoincidenceSession, etc. (coming soon)
-
-### Navigation
-- **[Documentation Index](docs/DOCUMENTATION_INDEX.md)** — Find what you need
-
----
-
 ## Features
 
-### Current (v1.0)
- Single-detector event streaming  
- Dual-detector coincidence mode  
- Live rate monitoring (configurable windows)  
- ADC histogram with threshold overlay  
- Event logging (TSV format with metadata)  
- CSV export  
- Real-time statistics (count, rate, mean ADC)  
- Threshold control (firmware command)  
- Detector naming via firmware  
- Connection status & error reporting  
- Bayesian uncertainty band
+### Current Features
+- [x] Single-detector event streaming  
+- [x] Dual-detector coincidence mode  
+- [x] Live rate monitoring (configurable windows)  
+- [x] ADC histogram with threshold overlay  
+- [x] Event logging (TSV format with metadata)  
+- [x] CSV export  
+- [x] Real-time statistics (count, rate, mean ADC, standard deviation)  
+- [x] Threshold control (firmware command)  
+- [x] Detector naming via firmware  
+- [x] Connection status & error reporting  
+- [x] Bayesian uncertainty band
 
 ## System Architecture
 
@@ -165,8 +148,8 @@ cosmic-watch/
    ┌────┴──────────────┼──────────────┴────┐
    │                   │                    │
 ┌──▼───────┐      ┌──▼──────┐       ┌─────▼────┐
-│DetectorA  │      │DetectorB│       │SessionLog │
-│ (Pico 1)  │      │ (Pico 2)│       │ (File)    │
+│  Master  │      │  Slave  │       │SessionLog │
+│ (Pico 1) │      │ (Pico 2)│       │ (File)    │
 └──────────┘      └─────────┘       └───────────┘
      ↓                  ↓
   USB/Serial       USB/Serial
@@ -190,7 +173,7 @@ Pico 1 (Master)  ←USB→  Laptop
 
 ### Dual Detector (Coincidence)
 ```
-Pico 1 (Master)  ←USB→  Laptop  ←USB→  Pico 2 (Slave)
+Pico 2 (Slave) ←TRS→ Pico 1 (Master)  ←USB→  Laptop    
 ```
 
 **Requirements per Pico:**
@@ -285,19 +268,6 @@ sudo usermod -a -G dialout $USER
 ```
 
 **More issues?** See [Troubleshooting Guide](docs/TROUBLESHOOTING.md).
-
----
-
-## Performance
-
-| Metric | Value |
-|--------|-------|
-| **Event latency** | ~1–5 ms (USB serial jitter) |
-| **Max rate (single)** | 10+ kHz (hardware limited) |
-| **Coincidence window** | 20 ms software matching |
-| **GUI refresh** | 10 Hz (100 ms ticks) |
-| **Memory footprint** | ~80 MB (event buffer + plots) |
-| **CPU usage** | <10% (parsing + plotting) |
 
 ---
 
