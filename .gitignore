@@ -1,18 +1,26 @@
 # Python
 __pycache__/
 *.py[cod]
+<<<<<<< HEAD
 *.pyo
 
 # Virtual environment
 venv/
 .venv/
 env/
+=======
+
+# Virtual environments
+venv/
+.venv/
+>>>>>>> 1155e45 (Add .gitignore)
 
 # macOS
 .DS_Store
 
 # IDEs
 .vscode/
+<<<<<<< HEAD
 .idea/
 
 # Logs
@@ -25,3 +33,6 @@ dist/
 
 # Jupyter
 .ipynb_checkpoints/
+=======
+.idea/
+>>>>>>> 1155e45 (Add .gitignore)
